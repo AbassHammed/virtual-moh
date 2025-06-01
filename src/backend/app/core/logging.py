@@ -4,7 +4,7 @@ from typing import cast
 
 from loguru import logger
 
-class Intercepthandler(logging.Handler):
+class InterceptHandler(logging.Handler):
     def emit(self, record: logging.LogRecord) -> None:
 
         try:
