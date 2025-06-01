@@ -9,11 +9,11 @@ if (!defined('ABSPATH')) {
     define('ABSPATH', __DIR__ . '/');
 }
 if (!defined('VIEWS')) {
-    define('VIEWS', 'views');
+    define('VIEWS', ABSPATH . 'views');
 }
 if (!defined('ASSETS')) {
-    define('ASSETS', 'views/assets');
+    define('ASSETS', VIEWS . '/assets');
 }
 if (!defined('PAGES')) {
-    define('PAGES', 'views/pages');
+    define('PAGES', VIEWS . '/pages');
 }
