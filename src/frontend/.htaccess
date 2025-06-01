@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteBase /
+
+<Files "bootstrap.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+ErrorDocument 404 /404
+
+RewriteRule ^$ index.php?page=home [L]
+
+RewriteRule ^404/?$ index.php?page=404 [L]
+
+RewriteRule ^([a-zA-Z-]+)/?$ index.php?page=$1 [QSA,L]
+
+RewriteRule ^([a-zA-Z-]+)/([\w-]+)/?$ index.php?page=$1&id=$2 [L]
