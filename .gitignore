@@ -4,3 +4,4 @@ coverage
 *.pyo
 __pycache__/
 .env
+.git/

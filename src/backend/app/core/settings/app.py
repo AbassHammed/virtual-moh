@@ -11,12 +11,13 @@ from app.core.settings.base import BaseAppSettings
 
 class AppSettings(BaseAppSettings):
     debug: bool = False
-    docs_url: str = "/docs"
-    openapi_prefix: str = ""
-    openapi_url: str = "/openapi.json"
-    redoc_url: str = "/redoc"
+    docs_url: str = "/api/docs"
+    openapi_prefix: str = "/api"
+    openapi_url: str = "/api/openapi.json"
+    redoc_url: str = "/api/redoc"
     title: str = "Film-o-more backend API Services"
     version: str = "0.0.1"
+    api_prefix: str = "/api"
 
     database_url: PostgresDsn
     max_connection_count: int = 10
