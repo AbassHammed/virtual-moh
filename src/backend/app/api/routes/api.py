@@ -4,4 +4,4 @@ from app.api.routes import films
 
 router = APIRouter()
 
-router.include_router(films.router, prefix="/films", tags=["films"])
+router.include_router(films.router, prefix="/film", tags=["film"])
