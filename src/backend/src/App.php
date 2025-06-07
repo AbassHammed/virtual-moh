@@ -17,3 +17,4 @@ $app = new \Slim\App($settings);
 $app->add(new \CorsSlim\CorsSlim());
 $container = $app->getContainer();
 require_once __DIR__ . '/Dependencies.php';
+require_once __DIR__ . '/Routes.php'($app);

@@ -1,8 +1,6 @@
 services:
   mysql:
-    build:
-      context: .
-      dockerfile: docker/db/Dockerfile
+    image: mysql:8.0
     container_name: mysql
     environment:
       MYSQL_DATABASE: filmdb
@@ -11,6 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
@@ -21,8 +20,8 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: docker/backend/Dockerfile
+      context: ../src/backend
+      dockerfile: ../../docker/backend/Dockerfile
     container_name: backend
     environment:
       DB_HOST: mysql
@@ -31,17 +30,11 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       OMDB_API_KEY: ${OMDB_API_KEY}
+    volumes:
+      - ./backend/entrypoint.sh:/entrypoint.sh
     depends_on:
       mysql:
         condition: service_healthy
-    networks:
-      - film-network
-
-  frontend:
-    build:
-      context: .
-      dockerfile: docker/frontend/Dockerfile
-    container_name: frontend
     networks:
       - film-network
 
@@ -51,9 +44,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./docker/Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
     depends_on:
-      - frontend
       - backend
     networks:
       - film-network
