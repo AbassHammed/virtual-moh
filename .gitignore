@@ -4,4 +4,6 @@ coverage
 *.pyo
 __pycache__/
 .env
-.git/
+composer.lock
+vendor/
+.idea/

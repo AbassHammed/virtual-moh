@@ -15,6 +15,5 @@ $container['db'] = static function (ContainerInterface $container): db {
         $database['host'],
     );
 
-
     return $db;
 };

@@ -1,43 +1,65 @@
 services:
-  server:
+  mysql:
     build:
-      context: ../src/backend
-      dockerfile: ../../docker/Dockerfile-back
-    restart: on-failure
+      context: .
+      dockerfile: docker/db/Dockerfile
+    container_name: mysql
     environment:
-      DATABASE_URL: "postgresql://postgres:postgres@db/postgres"
-    env_file:
-      - ../.env
-    depends_on:
-      - db
-    networks:
-      - internal
-    expose:
-      - 3000
-  db:
-    image: postgres:17.5-alpine
-    env_file:
-      - ../.env
+      MYSQL_DATABASE: filmdb
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data:cached
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
     networks:
-      - internal
+      - film-network
 
-  caddy:
-    image: caddy:2.10.0-alpine
-    restart: unless-stopped
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    container_name: backend
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: filmdb
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      OMDB_API_KEY: ${OMDB_API_KEY}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - film-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    container_name: frontend
+    networks:
+      - film-network
+
+  proxy:
+    image: caddy:alpine
+    container_name: proxy
     ports:
       - "80:80"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-    networks:
-      - internal
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile
     depends_on:
-      - server
-
-volumes:
-  postgres-data:
+      - frontend
+      - backend
+    networks:
+      - film-network
 
 networks:
-  internal:
-    driver: bridge
+  film-network:
+
+volumes:
+  mysql-data:
