@@ -2,18 +2,30 @@
 
 declare(strict_types=1);
 
-use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface as Response;
 
-$container['db'] = static function (ContainerInterface $container): db {
+function require_db(): void {
+
+    global $db;
     require_once __DIR__ . '/Database.php';
-    $database = $container->get('settings')['db'];
+
+    if(isset($db)) {
+        return;
+    }
 
     $db = new db(
-        $database['user'],
-        $database['pass'],
-        $database['name'],
-        $database['host'],
+        getenv('DB_USER'),
+        getenv('DB_PASS'),
+        getenv('DB_NAME'),
+        getenv('DB_HOST'),
     );
-
-    return $db;
 };
+
+function jsonResponse(Response $response, array $data, int $status = 200): Response
+{
+    $payload = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($status);
+}

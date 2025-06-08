@@ -1,3 +1,6 @@
+php_flag display_errors Off
+php_value error_reporting 22527
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]

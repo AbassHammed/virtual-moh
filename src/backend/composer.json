@@ -1,9 +1,11 @@
 {
   "require": {
-    "slim/slim": "^3.12",
+    "slim/slim": "^4.14",
     "vlucas/phpdotenv": "^5.6",
     "php": "^8.0",
     "composer/composer": "^2.8",
-    "palanik/corsslim": "dev-slim3"
+    "palanik/corsslim": "dev-slim3",
+    "guzzlehttp/guzzle": "^7.9",
+    "slim/psr7": "^1.7"
   }
 }

@@ -1,11 +1,11 @@
-FROM php:8.4-apache
+FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
     && docker-php-ext-install zip \
-    && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql mysqli
 
 RUN a2enmod rewrite
 

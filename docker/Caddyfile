@@ -1,6 +1,6 @@
 http://localhost {
-  
-  handle /api/* {
-    reverse_proxy server:3000
-  }
+
+handle /api/* {
+reverse_proxy backend:80
+}
 }
