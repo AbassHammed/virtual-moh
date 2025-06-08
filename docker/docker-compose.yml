@@ -38,6 +38,18 @@ services:
     networks:
       - film-network
 
+  frontend:
+    build:
+      context: ../src/frontend
+      dockerfile: ../../docker/frontend/Dockerfile
+    container_name: frontend
+    volumes:
+      - ../src/frontend:/var/www/html
+    networks:
+      - film-network
+    depends_on:
+      - backend
+
   proxy:
     image: caddy:alpine
     container_name: proxy
