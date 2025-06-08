@@ -17,3 +17,5 @@ if (!defined('ASSETS')) {
 if (!defined('PAGES')) {
     define('PAGES', VIEWS . '/pages');
 }
+
+require_once 'views/inc/functions.php';
