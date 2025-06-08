@@ -21,6 +21,7 @@ $dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS', 'DB_PORT']);
 $app = AppFactory::create();
 
 $app->addErrorMiddleware(true, true, true);
+$app->addBodyParsingMiddleware();
 
 require_once __DIR__ . '/Dependencies.php';
 require_db();

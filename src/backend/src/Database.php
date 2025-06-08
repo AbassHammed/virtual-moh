@@ -1777,7 +1777,7 @@ class db
                 $value['charset'] = false;
             } else {
                 $value['charset'] = $this->get_col_charset($table, $field);
-                if (is_error($value['charset'])) {
+                if ($this->is_error($value['charset'])) {
                     return false;
                 }
             }
@@ -1787,6 +1787,11 @@ class db
 
         return $data;
     }
+
+    protected function is_error($var): bool
+{
+    return is_object($var) && $var instanceof Error;
+}
 
     /**
      * For string fields, records the maximum string length that field can safely save.
@@ -1835,7 +1840,7 @@ class db
                 $value['length'] = false;
             } else {
                 $value['length'] = $this->get_col_length($table, $field);
-                if (is_error($value['length'])) {
+                if ($this->is_error($value['length'])) {
                     return false;
                 }
             }
@@ -2129,7 +2134,7 @@ class db
         if (empty($this->table_charset[ $tablekey ])) {
             // This primes column information for us.
             $table_charset = $this->get_table_charset($table);
-            if (is_error($table_charset)) {
+            if ($this->is_error($table_charset)) {
                 return $table_charset;
             }
         }
@@ -2181,7 +2186,7 @@ class db
         if (empty($this->col_meta[ $tablekey ])) {
             // This primes column information for us.
             $table_charset = $this->get_table_charset($table);
-            if (is_error($table_charset)) {
+            if ($this->is_error($table_charset)) {
                 return $table_charset;
             }
         }
@@ -2491,7 +2496,7 @@ class db
         $table = $this->get_table_from_query($query);
         if ($table) {
             $charset = $this->get_table_charset($table);
-            if (is_error($charset)) {
+            if ($this->is_error($charset)) {
                 return $charset;
             }
 
@@ -2511,7 +2516,7 @@ class db
         ];
 
         $data = $this->strip_invalid_text(array( $data ));
-        if (is_error($data)) {
+        if ($this->is_error($data)) {
             return $data;
         }
 
